@@ -18,15 +18,13 @@ export class TasksService {
   }
 
   async findAll() {
-    const tasks = await this.prisma.tasks.findMany();
-
-    return tasks;
+    return await this.prisma.tasks.findMany();
   }
 
   async findOne(id: string) {
     return this.prisma.tasks.findUnique({
       where: {
-        id: id,
+        id,
       },
     });
   }
@@ -34,7 +32,7 @@ export class TasksService {
   async update(id: string, { title, description }: UpdateTaskDto) {
     const task = await this.prisma.tasks.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         title,
@@ -47,7 +45,7 @@ export class TasksService {
   async remove(id: string) {
     await this.prisma.tasks.delete({
       where: {
-        id: id,
+        id,
       },
     });
   }
