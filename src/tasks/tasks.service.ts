@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, HttpCode } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from 'src/database/prisma.service';
@@ -62,7 +62,6 @@ export class TasksService {
     return task;
   }
 
-  @HttpCode(204)
   async remove(id: string) {
     const taskExists = await this.prisma.tasks.findUnique({
       where: {
