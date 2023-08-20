@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma.service';
@@ -16,7 +20,7 @@ export class UsersService {
     });
 
     if (emailExists) {
-      throw new NotFoundException('Email already used');
+      throw new ConflictException('Email already used');
     }
 
     const hashedPassword = await hash(password, 8);
@@ -69,7 +73,7 @@ export class UsersService {
     });
 
     if (emailExists) {
-      throw new NotFoundException('Email already used');
+      throw new ConflictException('Email already used');
     }
 
     const hashedPassword = await hash(password, 8);
