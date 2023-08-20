@@ -8,13 +8,12 @@ export class TasksService {
   constructor(private prisma: PrismaService) {}
 
   async create({ title, description }: CreateTaskDto) {
-    const task = await this.prisma.tasks.create({
+    return await this.prisma.tasks.create({
       data: {
         title,
         description,
       },
     });
-    return task;
   }
 
   async findAll() {
@@ -50,7 +49,7 @@ export class TasksService {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
 
-    const task = await this.prisma.tasks.update({
+    return await this.prisma.tasks.update({
       where: {
         id,
       },
@@ -59,7 +58,6 @@ export class TasksService {
         description,
       },
     });
-    return task;
   }
 
   async remove(id: string) {
