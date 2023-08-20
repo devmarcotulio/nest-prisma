@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma.service';
-import hash from 'bcrypt';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,11 +15,11 @@ export class UsersService {
       },
     });
 
-    if (!emailExists) {
-      throw new NotFoundException(`Not found user with this ID ${email}`);
+    if (emailExists) {
+      throw new NotFoundException('Email already used');
     }
 
-    const hashedPassword = await hash(password, 10);
+    const hashedPassword = await hash(password, 8);
 
     return await this.prisma.users.create({
       data: {
@@ -62,13 +62,25 @@ export class UsersService {
       throw new NotFoundException(`Not found user with this ID ${id}`);
     }
 
+    const emailExists = await this.prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (emailExists) {
+      throw new NotFoundException('Email already used');
+    }
+
+    const hashedPassword = await hash(password, 8);
+
     return await this.prisma.users.update({
       where: {
         id,
       },
       data: {
         email,
-        password,
+        password: hashedPassword,
       },
     });
   }
