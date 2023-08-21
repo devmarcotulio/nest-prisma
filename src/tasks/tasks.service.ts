@@ -7,11 +7,16 @@ import { PrismaService } from 'src/database/prisma.service';
 export class TasksService {
   constructor(private prisma: PrismaService) {}
 
-  async create({ title, description }: CreateTaskDto) {
+  async create({ title, description }: CreateTaskDto, user_id: string) {
     return await this.prisma.tasks.create({
       data: {
         title,
         description,
+        Users: {
+          connect: {
+            id: user_id,
+          },
+        },
       },
     });
   }

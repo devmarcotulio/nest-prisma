@@ -9,7 +9,7 @@ import { PrismaService } from 'src/database/prisma.service';
     JwtModule.register({
       global: true,
       secret: process.env.AUTH_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '30d' },
     }),
   ],
   controllers: [AuthController],

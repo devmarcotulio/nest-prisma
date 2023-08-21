@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   HttpCode,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -17,8 +19,14 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  create(@Body() createTaskDto: CreateTaskDto, @Req() req) {
+    const user_id = req.user.sub;
+
+    if (!user_id) {
+      throw new UnauthorizedException('Invalid user ID');
+    }
+
+    return this.tasksService.create(createTaskDto, user_id);
   }
 
   @Get()
