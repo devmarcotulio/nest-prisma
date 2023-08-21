@@ -35,8 +35,6 @@ export class AuthService {
     const paylod = { subject: user.id, email: user.email };
     const token = this.jwtService.sign(paylod);
 
-    console.log(token);
-
     return {
       token,
       user,
