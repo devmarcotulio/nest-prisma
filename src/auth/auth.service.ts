@@ -32,8 +32,8 @@ export class AuthService {
       throw new ConflictException('Incorrect email/password combination');
     }
 
-    const paylod = { subject: user.id, email: user.email };
-    const token = this.jwtService.sign(paylod);
+    const paylod = { sub: user.id };
+    const token = await this.jwtService.signAsync(paylod);
 
     return {
       token,
