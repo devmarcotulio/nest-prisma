@@ -5,22 +5,18 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { PrismaService } from 'src/database/prisma.service';
 import { compare } from 'bcrypt';
+import { UsersRepository } from 'src/users/repository/users-repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private prisma: PrismaService,
+    private usersRepository: UsersRepository,
   ) {}
 
   async create({ email, password }: CreateAuthDto) {
-    const user = await this.prisma.users.findUnique({
-      where: {
-        email,
-      },
-    });
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new NotFoundException('User not found.');
