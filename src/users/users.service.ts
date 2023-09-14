@@ -28,15 +28,17 @@ export class UsersService {
   }
 
   async findAll() {
-    await this.usersRepository.findMany();
+    return await this.usersRepository.findMany();
   }
 
   async findOne(id: string) {
-    const userExists = await this.usersRepository.findById(id);
+    const user = await this.usersRepository.findById(id);
 
-    if (!userExists) {
+    if (!user) {
       throw new NotFoundException(`Not found user with this ID ${id}`);
     }
+
+    return user;
   }
 
   async update(id: string, { email, password }: UpdateUserDto) {
