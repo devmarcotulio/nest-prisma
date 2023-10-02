@@ -33,7 +33,7 @@ export class AuthService {
 
     return {
       token,
-      user,
+      user_id: user.id,
     };
   }
 }
