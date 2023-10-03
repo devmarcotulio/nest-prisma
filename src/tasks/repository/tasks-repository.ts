@@ -8,6 +8,8 @@ export abstract class TasksRepository {
 
   abstract findById(id: string);
 
+  abstract findByTitle(title: string);
+
   abstract update(id: string, { title, description }: UpdateTaskDto);
 
   abstract delete(id: string);

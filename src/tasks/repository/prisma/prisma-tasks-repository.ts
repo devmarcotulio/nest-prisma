@@ -42,6 +42,14 @@ export class PrismaTasksRepository implements TasksRepository {
     });
   }
 
+  async findByTitle(title: string) {
+    return await this.prisma.tasks.findUnique({
+      where: {
+        title,
+      },
+    });
+  }
+
   async findMany() {
     return await this.prisma.tasks.findMany();
   }

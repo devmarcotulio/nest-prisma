@@ -31,6 +31,16 @@ export class TasksService {
     return task;
   }
 
+  async findByTitle(title: string) {
+    const task = await this.tasksRepository.findByTitle(title);
+
+    if (!task) {
+      throw new NotFoundException(`Task with title ${title} not found`);
+    }
+
+    return task.id;
+  }
+
   async update(id: string, { title, description }: UpdateTaskDto) {
     const taskExists = await this.tasksRepository.findById(id);
 
