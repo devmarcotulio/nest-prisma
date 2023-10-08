@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TasksRepository } from './repository/tasks-repository';
@@ -8,6 +12,12 @@ export class TasksService {
   constructor(private tasksRepository: TasksRepository) {}
 
   async create({ title, description }: CreateTaskDto, user_id: string) {
+    const task = await this.tasksRepository.findByTitle(title);
+
+    if (task) {
+      throw new ConflictException(`Title ${title} already used`);
+    }
+
     await this.tasksRepository.create(
       {
         title,
